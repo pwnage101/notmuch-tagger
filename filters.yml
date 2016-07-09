@@ -1,0 +1,98 @@
+---
+# UCLA lists
+- Fields: To Cc
+  Pattern: (members|officers|admin)@linux\.ucla\.edu
+  Tags: +lug-lists +list
+- Fields: To Cc
+  Pattern: engrofficers@lists\.ucla\.edu
+  Tags: +engr-officers +list -inbox
+- Fields: To Cc
+  Pattern: uclaengrexecutive@lists\.ucla\.edu
+  Tags: +ucla-engr-exec +list -inbox
+- Fields: To Cc
+  Pattern: w6yra-class@lists\.igpp\.ucla\.edu
+  Tags: +w6yra +list -inbox
+- Fields: To Cc
+  Pattern: ucla_cycling@googlegroups\.com
+  Tags: +ucla-cycling +list -inbox
+- Fields: To Cc
+  Pattern: ucla-bicycle-coalition@googlegroups\.com
+  Tags: +ucla-bikes +list -inbox
+- Fields: To Cc
+  Pattern: e3-la@googlegroups\.com
+  Tags: +e3 +list -inbox
+
+# software mailing lists
+- Fields: To Cc
+  Pattern: (dev|wiki)@suckless\.org
+  Tags: +suckless +list -inbox
+- Fields: To Cc
+  Pattern: vim-dev@vim\.org
+  Tags: +vim +list -inbox
+- Fields: To Cc
+  Pattern: vim_dev@googlegroups\.com
+  Tags: +vim +list -inbox
+- Fields: To Cc
+  Pattern: vim@noreply\.github\.com
+  Tags: +vim +list -inbox
+- Fields: To Cc
+  Pattern: ngircd-ml@arthur\.barton\.de
+  Tags: +ngircd +list -inbox
+- Fields: To Cc
+  Pattern: supmua@googlegroups\.com
+  Tags: +sup +list -inbox
+- Fields: To Cc
+  Pattern: libreplanet-discuss@libreplanet\.org
+  Tags: +libreplanet-discuss +list -inbox
+- Fields: To Cc
+  Pattern: guix-devel@gnu\.org
+  Tags: +guix-devel +list -inbox
+
+# boston lists
+- Fields: To Cc
+  Pattern: boston-pm@mail\.pm\.org
+  Tags: +boston-pm +list -inbox
+- Fields: To Cc
+  Pattern: staff@somervillebikekitchen\.org
+  Tags: +sbk-staff +list
+- Fields: To Cc
+  Pattern: discuss@somervillebikekitchen\.org
+  Tags: +sbk-discuss +list
+- Fields: To Cc
+  Pattern: somervillegranolamakingcoop@googlegroups\.com
+  Tags: +granola +list
+- Fields: To Cc
+  Pattern: bcn@lists\.bostoncoop\.net
+  Tags: +bcn +list -inbox
+
+# work lists
+- Fields: To Cc
+  Pattern: eng-all@edx\.org
+  Tags: +edx +edx-eng-all +list -inbox
+- Fields: To Cc
+  Pattern: 141portland@edx\.org
+  Tags: +edx +edx-office +list -inbox
+- Fields: To Cc
+  Pattern: release-notifications@edx\.org
+  Tags: +edx +edx-release +list -inbox
+- Fields: To Cc
+  Pattern: openedx-ops@googlegroups\.com
+  Tags: +edx +openedx-ops +list -inbox
+- Fields: To Cc
+  Pattern: edx-code@googlegroups.com
+  Tags: +edx +openedx-code +list -inbox
+
+
+# addresses
+- Fields: To Cc Bcc
+  Pattern: sankeytms@gmail\.com
+  Tags: +gmail
+- Fields: To Cc Bcc
+  Pattern: sankeytm@linux\.ucla\.edu
+  Tags: +lug
+- Fields: To Cc Bcc
+  Pattern: sankey@mit\.edu
+  Tags: +mit -inbox
+- Fields: To Cc Bcc
+  Pattern: tsankey@edx\.org
+  Tags: +edx -inbox
