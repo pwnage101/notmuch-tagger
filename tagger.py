@@ -2,6 +2,7 @@
 
 import notmuch
 import yaml
+import json
 import re
 import os
 import sys
@@ -43,7 +44,7 @@ def reduce_tags(tags):
     reduced_tagnames = [x[1:] for x in reduced_tags]
     if tagname not in reduced_tagnames:
       reduced_tags.append(tag)
-  return reversed(reduced_tags)
+  return list(reversed(reduced_tags))
 
 def find_tags_to_apply(message, filters):
   tags_to_apply = []
@@ -54,6 +55,7 @@ def find_tags_to_apply(message, filters):
         tags_to_apply.extend(filter['Tags'].split(' '))
   return tags_to_apply
 
+# add_tag() and remove_tag() must have the same footprint
 def add_tag(message, tagname, dry_run=False):
   if not dry_run:
     message.add_tag(tagname)
@@ -83,6 +85,20 @@ def apply_found_tags(tags, message, dry_run=False):
     action = add_tag if tag_sign == '+' else remove_tag
     action(message, tag_name, dry_run=dry_run)
 
+def generate_output(output_data, json_output=False):
+  output = ''
+  if json_output:
+    output += json.dumps(output_data, indent=4)
+  else:
+    if output_data['total'] > 0:
+      output += '\n'
+      output += \
+        'successfully retagged %d new messages' % output_data['total']
+    else:
+      output += 'no new messages found'
+    output += '\n'
+  return output
+
 def main():
   # command line arguments
   new_argv = sys.argv[1:]
@@ -90,6 +106,10 @@ def main():
   if '--dry-run' in sys.argv[1:]:
     dry_run = True
     new_argv.remove('--dry-run')
+  json_output = False
+  if '--json-output' in sys.argv[1:]:
+    json_output = True
+    new_argv.remove('--json-output')
   query_string_override = None
   if len(new_argv) == 1:
     query_string_override = new_argv[0]
@@ -113,27 +133,31 @@ def main():
   stream = open(DEFAULT_CONFIG_PATH, 'r')
   filters = yaml.load(stream)
   stream.close()
-
   # we want to fail on invalid filters, so do not catch exceptions
   validate_filters(filters)
 
   message_counter = 0
+  inbox_counter = 0
   for msg in messages_to_retag:
     msg_id = msg.get_header('Subject')
     print("processing message %s" % msg_id, file=sys.stderr)
     initial_tags = msg.get_tags()
     tags_to_apply = []
-    # prevent this message from being processed again
     if 'new' in initial_tags:
-      tags_to_apply.extend(['-new', '+inbox'])
+      # prevent this message from being processed again
+      tags_to_apply.append('-new')
     tags_to_apply.extend(find_tags_to_apply(msg, filters))
     reduced_tags_to_apply = reduce_tags(tags_to_apply)
     apply_found_tags(reduced_tags_to_apply, msg, dry_run=dry_run)
     message_counter += 1
+    if '-inbox' not in reduced_tags_to_apply:
+      inbox_counter += 1
 
-  if message_counter > 0:
-    print('successfully retagged %d new messages' % message_counter)
-  else:
-    print('no new messages found')
+  output_data = {
+    'inbox': inbox_counter,
+    'total': message_counter,
+    }
+  output = generate_output(output_data, json_output=json_output)
+  print(output, end='')
 
 main()
