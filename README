@@ -1,0 +1,37 @@
+notmuch-tagger tags new messages in the notmuch database, based on
+user-provided rules.  It is a intended to be useful in a post-new hook
+(see notmuch-hooks(5)).
+
+It prints summary to stdout containing the total number of messages
+processed and the number of new messages not archived.  This output can
+be made machine-readable by supplying the --json-output flag.
+
+USAGE
+
+notmuch-tagger [--dry-run] [--json-output] [<query-override>]
+
+  --dry-run:
+ 
+    Do not apply changes to tags, open the database in readonly mode.
+
+  --json-output:
+
+    Format the output as a json dictionary containing they following
+    keys:
+
+      "inbox" - the number of new messages not archived
+      "total" - the total number of new messages
+
+CONFIGURATION
+
+notmuch-tagger reads tagging rules from ~/.notmuch-tagger.yml.  Each
+rule specifies the *Fields* to search, the *Pattern* to match, and the
+*Tags* to apply.  Rules that exist later in the config file have higher
+priority.  Here is an simple example of a rule for a mailing list:
+
+  - Fields: List-Id
+    Pattern: ^<example-list\.example\.com>$
+    Tags: +example-list +list -inbox
+
+Please refer to notmuch-tagger.example.yml for more usage details and
+examples.
