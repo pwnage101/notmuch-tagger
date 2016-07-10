@@ -110,7 +110,7 @@ def main():
     notmuch.Query(db, query_string).search_messages()
 
   # load filters from configuration file
-  stream = open('filters.yml', 'r')
+  stream = open(DEFAULT_CONFIG_PATH, 'r')
   filters = yaml.load(stream)
   stream.close()
 
