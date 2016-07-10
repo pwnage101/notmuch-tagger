@@ -1,6 +1,6 @@
 notmuch-tagger tags new messages in the notmuch database, based on
 user-provided rules.  It is a intended to be useful in a post-new hook
-(see notmuch-hooks(5)).
+(see the notmuch-hooks(5) manpage).
 
 It prints summary to stdout containing the total number of messages
 processed and the number of new messages not archived.  This output can
@@ -35,3 +35,20 @@ priority.  Here is an simple example of a rule for a mailing list:
 
 Please refer to notmuch-tagger.example.yml for more usage details and
 examples.
+
+You may invoke notmuch-tagger in your $DATABASEDIR/hooks/post-new so that every
+invocation of `notmuch new' will result in your new mail being automatically
+tagged.  Your post-new hook may be as simple as:
+
+  #!/bin/bash
+  notmuch-tagger
+
+Or it may also notify the user when new mail arrives:
+
+  #!/bin/bash
+  # requirements:
+  #   jq - lightweight and flexible command-line JSON processor
+  new_messages=$(notmuch-tagger --json-output | jq .inbox)
+  if [[ $new_messages -gt 0 ]]; then
+    notify-send "You have mail!"
+  fi
