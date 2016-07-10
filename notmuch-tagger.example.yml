@@ -1,0 +1,22 @@
+---
+# Example mailing list tagging based on List-Id.  Add the tags
+# "example-list-1" and "list".  Remove the "inbox" tag.
+- Fields: List-Id
+  Pattern: ^<example-list-1\.example\.com>$
+  Tags: +example-list-1 +list -inbox
+
+# Example mailing list tagging based on recipients.
+- Fields: To Cc
+  Pattern: example-list-2@example\.com
+  Tags: +example-list-2 +list -inbox
+
+# Example mailing list tagging based on subject.
+- Fields: Subject
+  Pattern: ^\[EXAMPLE LIST 3\]
+  Tags: +example-list-3 +list -inbox
+
+# Example of a mailing list which is not to be archived (do not add
+# "-inbox" to the tags).
+- Fields: Subject
+  Pattern: ^\[EXAMPLE LIST 4\]
+  Tags: +example-list-4 +list
