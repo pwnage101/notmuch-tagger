@@ -8,16 +8,20 @@ import os
 import sys
 import logging
 
-LOGGER = logging.logger('notmuch-tagger')
+logging.basicConfig(
+    format='notmuch-tagger: %(levelname)s: %(message)s',
+    stream=sys.stderr,
+    level=logging.DEBUG,
+    )
 
 HOMEDIR = os.getenv('HOME')
 DEFAULT_CONFIG_PATH = os.path.join(HOMEDIR, '.notmuch-tagger.yml')
 
 
-def info(msg, dry_run=False):
+def log(msg, level=logging.INFO, dry_run=False):
     if dry_run:
         msg = '[DRY RUN] {}'.format(msg)
-    LOGGER.info(msg)
+    logging.log(level, msg)
 
 
 def pattern_match(string, pattern):
@@ -34,9 +38,10 @@ def validate_filters(filters):
 
         tags = filter['Tags'].split(' ')
         if len(tags) == 0 or tags == ['+inbox']:
-            LOGGER.warn(
+            log(
                 'the following tags list is a no-op: "{}"'.format(
-                    filter['Tags'])
+                    filter['Tags']),
+                level=logging.WARN,
                 )
         if set([x[0] for x in tags]) > set(('+', '-')):
             raise ValueError(
@@ -74,7 +79,7 @@ def find_tags_to_apply(message, filters):
 def add_tag(message, tagname, dry_run=False):
     if not dry_run:
         message.add_tag(tagname)
-    info(
+    log(
         '{}: added tag "{}"'.format(
             message.get_message_id()[:20],
             tagname,
@@ -87,7 +92,7 @@ def add_tag(message, tagname, dry_run=False):
 def remove_tag(message, tagname, dry_run=False):
     if not dry_run:
         message.remove_tag(tagname)
-    info(
+    log(
         '{}: removed tag "{}"'.format(
             message.get_message_id()[:20],
             tagname,
@@ -142,7 +147,7 @@ def main():
     inbox_counter = 0
     for msg in messages_to_retag:
         msg_id = msg.get_header('Subject')
-        info('processing message {}'.format(msg_id))
+        log('processing message {}'.format(msg_id))
         initial_tags = msg.get_tags()
         tags_to_apply = []
         if 'new' in initial_tags:
@@ -157,7 +162,7 @@ def main():
 
     # if there are no new message, remind user on standard error
     if message_counter == 0:
-        info('no new messages')
+        log('no new messages')
 
     # print machine-readable summary on standard output
     output_data = {
