@@ -1,28 +1,30 @@
+INTRODUCTION
+============
+
 notmuch-tagger tags new messages in the notmuch database, based on
 user-provided rules.  It is a intended to be useful in a post-new hook
 (see the notmuch-hooks(5) manpage).
 
-It prints summary to stdout containing the total number of messages
-processed and the number of new messages not archived.  This output can
-be made machine-readable by supplying the --json-output flag.
+It prints a summary to standard output containing the total number of
+messages processed ("total") and the number of new messages not archived
+("inbox").
 
 USAGE
+=====
 
-notmuch-tagger [--dry-run] [--json-output] [<query-override>]
+notmuch-tagger [--dry-run] [<query-override>]
 
-  --dry-run:
+  <query-override>
+
+    If provided, this string argument will be used as a notmuch query to
+    select messages to retag.  The default query string is "tag:new".
+
+  --dry-run
  
-    Do not apply changes to tags, open the database in readonly mode.
-
-  --json-output:
-
-    Format the output as a json dictionary containing they following
-    keys:
-
-      "inbox" - the number of new messages not archived
-      "total" - the total number of new messages
+    Do not apply any changes, open the database in readonly mode.
 
 CONFIGURATION
+=============
 
 notmuch-tagger reads tagging rules from ~/.notmuch-tagger.yml.  Each
 rule specifies the *Fields* to search, the *Pattern* to match, and the
@@ -48,7 +50,7 @@ Or it may also notify the user when new mail arrives:
   #!/bin/bash
   # requirements:
   #   jq - lightweight and flexible command-line JSON processor
-  new_messages=$(notmuch-tagger --json-output | jq .inbox)
-  if [[ $new_messages -gt 0 ]]; then
+  new_inbox_messages=$(notmuch-tagger | jq .inbox)
+  if [[ $new_inbox_messages -gt 0 ]]; then
     notify-send "You have mail!"
   fi
