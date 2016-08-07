@@ -20,3 +20,9 @@
 - Fields: Subject
   Pattern: ^\[EXAMPLE LIST 4\]
   Tags: +example-list-4 +list
+
+# Example of pattern matching based on non-standard headers.  E.g.
+# filter bugs for a specific software package in the GNU bug tracker.
+- Fields: X-GNU-PR-Package
+  Pattern: hello  # the GNU hello package
+  Tags: +hello-bugs +list -inbox
