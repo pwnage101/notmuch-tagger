@@ -25,7 +25,7 @@ def log(msg, level=logging.INFO, dry_run=False):
 
 
 def pattern_match(string, pattern):
-    matcher = re.compile(pattern)
+    matcher = re.compile(pattern, flags=re.IGNORECASE)
     match = matcher.search(string)
     return match is not None
 
